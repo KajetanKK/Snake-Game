@@ -1,0 +1,71 @@
+<canvas class="game" width="400" height="400"></canvas>
+<script>
+
+window.onload=function() {
+    context=document.querySelector(".game").getContext("2d");
+    document.addEventListener("keydown", (move) => {
+
+      switch(move.keyCode) {
+        case 37:
+            xv=-1;
+            yv=0;
+            break;
+
+        case 38:
+            xv=0;
+            yv=-1;
+            break;
+
+        case 39:
+            xv=1;
+            yv=0;
+            break;
+
+        case 40:
+            xv=0;
+            yv=1;
+            break;
+
+    }});
+
+    setInterval(theGame,1000/15);
+}
+
+sx=sy=15;
+xv=yv=0;
+gs=tc=20;
+px=py=10;
+
+track=[];
+point = 5;
+
+const theGame = () => {
+    px+=xv; py+=yv;
+
+    if(px<0) px= tc-1;
+    if(px>tc-1) px= 0;
+    if(py<0) py= tc-1;
+    if(py>tc-1) py= 0;
+
+    context.fillStyle="dimgray";
+    context.fillRect(0, 0, document.querySelector(".game").width, document.querySelector(".game").height);
+ 
+    context.fillStyle="yellow";
+    for(var i=0;i<track.length;i++) {
+        context.fillRect(track[i].x*gs,track[i].y*gs,gs-2,gs-2);
+        if(track[i].x===px && track[i].y===py) point = 5;
+    }
+
+    track.push({x:px,y:py});
+    while(track.length>point) track.shift();
+ 
+    if(sx===px && sy===py) {
+        point++;
+        sx,sy = Math.floor(Math.random()*tc);
+    }
+
+    context.fillStyle="blue";
+    context.fillRect(sx*gs,sy*gs,gs-2,gs-2);
+}
+
+</script>
